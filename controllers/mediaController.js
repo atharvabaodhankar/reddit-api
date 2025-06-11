@@ -2,7 +2,7 @@ import { fetchFromReddit } from '../utils/redditFetcher.js';
 const DEFAULT_SUBREDDITS = process.env.DEFAULT_SUBREDDITS.split(',').map((s) => s.trim());
 
 export const fetchMedia = async (req, res) => {
-    const { subreddit, limit } = req.query;
+    const { subreddit, limit, random } = req.query;
 
     const count = parseInt(limit) || 1;
   
@@ -12,7 +12,7 @@ export const fetchMedia = async (req, res) => {
   
     for (const sub of subredditsToTry) {
       try {
-        const mediaItems = await fetchFromReddit(sub, count);
+        const mediaItems = await fetchFromReddit(sub, count, random === 'true');
 
         if (mediaItems.length > 0) {
           return res.json(mediaItems); // ✅ Success response

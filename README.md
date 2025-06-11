@@ -79,8 +79,18 @@ GET /api/media
 ``` 
 5 posts from a specific subreddit: 
 
-```http 
+```
 GET /api/media?subreddit=Art&limit=5 
+```
+
+Example usage with external API:
+
+```
+https://openmedia-fetcher.onrender.com/api/reddit?subreddit=GTA&limit=5
+```
+
+```
+https://openmedia-fetcher.onrender.com/api/reddit
 ``` 
 
 ---
