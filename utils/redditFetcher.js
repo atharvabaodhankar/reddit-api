@@ -1,39 +1,39 @@
-// utils/redditFetcher.js
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
+import { getRedditAccessToken } from './redditAuth.js';
 
-async function fetchFromReddit(subreddit, keyword, limit) {
-  const url = `https://www.reddit.com/r/${subreddit}.json?limit=100`;
+export async function fetchFromReddit(subreddit, count = 1) {
+  const token = await getRedditAccessToken();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    'User-Agent': process.env.REDDIT_USER_AGENT || 'media-api/1.0',
+    Accept: 'application/json',
+  };
 
-  const res = await fetch(url, {
-    headers: {
-      'User-Agent': 'RedditMediaFetcher/1.0',
-    },
-  });
+  const url = `https://oauth.reddit.com/r/${subreddit}/hot.json?limit=50`;
+  const res = await fetch(url, { headers });
 
-  if (!res.ok) throw new Error('Reddit fetch failed');
+  if (!res.ok) throw new Error(`Failed to fetch from Reddit: ${res.status}`);
 
   const data = await res.json();
-  const posts = data.data.children;
+  const posts = data.data.children || [];
 
-  const filtered = posts
-    .map((p) => p.data)
-    .filter((post) => {
-      const isMedia = post.url && (post.url.endsWith('.jpg') || post.url.endsWith('.png') || post.url.endsWith('.gif') || post.url.includes('redgifs') || post.is_video);
-      const titleMatch = !keyword || post.title.toLowerCase().includes(keyword.toLowerCase());
-      return isMedia && titleMatch;
-    })
-    .slice(0, limit);
+  const mediaPosts = posts
+    .map(p => p.data)
+    .filter(p =>
+      !p.over_18 &&                     // skip NSFW
+      !p.stickied &&                   // skip pinned
+      (p.post_hint === 'image' || p.is_video || p.url?.endsWith('.jpg') || p.url?.endsWith('.png'))
+    )
+    .slice(0, count)
+    .map(p => ({
+      title: p.title,
+      url: p.url_overridden_by_dest || p.url,
+      is_video: !!p.is_video,
+      thumbnail: p.thumbnail,
+      subreddit: p.subreddit,
+      permalink: `https://reddit.com${p.permalink}`,
+      id: p.id,
+    }));
 
-  return filtered.map((post) => ({
-    id: post.id,
-    title: post.title,
-    subreddit: post.subreddit,
-    mediaUrl: post.url_overridden_by_dest || post.url,
-    preview: post.thumbnail,
-    type: post.is_video ? 'video' : 'image',
-    ups: post.ups,
-    permalink: `https://reddit.com${post.permalink}`,
-  }));
+  return mediaPosts;
 }
-
-module.exports = fetchFromReddit;

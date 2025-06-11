@@ -178,15 +178,9 @@ GitHub: `https://github.com/your-username`
 
 ## 🌐 Resources 
 
-* <mcurl name="https://www.reddit.com/dev/api/" url="https://www.reddit.com/dev/api/"></mcurl> 
-* <mcurl name="https://expressjs.com/" url="https://expressjs.com/"></mcurl> 
-* <mcurl name="https://nodejs.org/" url="https://nodejs.org/"></mcurl> 
+* [Reddit API Documentation](https://www.reddit.com/dev/api/) 
+* [Express.js](https://expressjs.com/) 
+* [Node.js](https://nodejs.org/) 
 
 ---
 
-## 💡 Tip 
-
-Want to add NSFW/private subreddits without making them public? 
-Use the `subreddit` query param in the frontend, and **don't include them in the default list.** 
-
-```
