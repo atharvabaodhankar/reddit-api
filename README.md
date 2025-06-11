@@ -75,12 +75,12 @@ Query Parameters
 1 random post from default subreddits: 
 
 ```http 
-GET /api/media 
+GET https://openmedia-fetcher.onrender.com/api/reddit 
 ``` 
 5 posts from a specific subreddit: 
 
 ```
-GET /api/media?subreddit=Art&limit=5 
+GET https://openmedia-fetcher.onrender.com/api/reddit?subreddit=SubredditName&limit=5 
 ```
 
 Example usage with external API:
