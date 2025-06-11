@@ -43,60 +43,61 @@ Server will start on:
 
 ---
 
+## ⚙️ Environment Variables
+
+Create a `.env` file in the root directory of the project and add the following:
+
+```
+PORT=3001
+REDDIT_USER_AGENT=your-reddit-user-agent
+```
+
+- `PORT`: The port the server will run on (default: 3001).
+- `REDDIT_USER_AGENT`: A unique user agent string for your application. This is required by Reddit's API.
+
+---
+
 ## 🔧 API Usage 
-
-### Base Endpoint 
-
-``` 
+Base Endpoint 
+```bash 
 GET /api/media 
 ``` 
-
-### Optional Query Parameters 
+Query Parameters 
 
 | Param | Type | Description | 
-| ----------- | ------ | --------------------------------------------------- | 
-| `subreddit` | string | (Optional) Specific subreddit to fetch from | 
-| `q` | string | (Optional) Filter posts by title keyword | 
-| `limit` | number | (Optional) Number of posts to return (default: `1`) | 
+|---|---|---| 
+| subreddit | string | (Optional) Subreddit to fetch from | 
+| limit | number | (Optional) Number of media posts to get (default: 1) | 
 
 ---
 
-### ✅ Example Requests 
+✅ Example Requests 
+1 random post from default subreddits: 
 
-* **Get 1 random post** from default SFW subreddits: 
+```http 
+GET /api/media 
+``` 
+5 posts from a specific subreddit: 
 
- ``` 
- GET /api/media 
- ``` 
-
-* **Get 5 posts** from a specific subreddit: 
-
- ``` 
- GET /api/media?subreddit=Art&limit=5 
- ``` 
-
-* **Search for "sky"** in titles across default subreddits: 
-
- ``` 
- GET /api/media?q=sky 
- ``` 
+```http 
+GET /api/media?subreddit=Art&limit=5 
+``` 
 
 ---
 
-## 📄 Sample JSON Response 
-
+📄 Sample JSON Response 
 ```json 
 [ 
- {
- "id": "abc123", 
- "title": "Stunning sunset over the ocean", 
- "subreddit": "EarthPics", 
- "mediaUrl": "https://i.redd.it/xyz.jpg", 
- "preview": "https://preview.redd.it/xyz.jpg", 
- "type": "image", 
- "ups": 1023, 
- "permalink": "https://reddit.com/r/EarthPics/comments/abc123/stunning_sunset" 
- } 
+  { 
+    "id": "abc123", 
+    "title": "Stunning sunset over the ocean", 
+    "subreddit": "EarthPics", 
+    "mediaUrl": "`https://i.redd.it/xyz.jpg`", 
+    "preview": "`https://preview.redd.it/xyz.jpg`", 
+    "type": "image", 
+    "ups": 1023, 
+    "permalink": "`https://reddit.com/r/EarthPics/comments/abc123/stunning_sunset`" 
+  } 
 ] 
 ``` 
 
@@ -104,42 +105,21 @@ GET /api/media
 
 ## 📁 Folder Structure 
 
-``` 
-reddit-media-api/ 
-\u2502 
-\u251c\u2500\u2500 controllers/ 
-\u2502 \u2514\u2500\u2500 mediaController.js # Handles logic for /api/media 
-\u2502 
-\u251c\u2500\u2500 utils/ 
-\u2502 \u2514\u2500\u2500 redditFetcher.js # Reddit fetch logic 
-\u2502 
-\u251c\u2500\u2500 server.js # Express server entry point 
-\u251c\u2500\u2500 package.json # Project metadata and scripts 
-\u2514\u2500\u2500 README.md # You're here! 
-``` 
-
----
-
-## 📋 Default Safe Subreddits 
-
-This project uses only **visually appealing subreddits** by default: 
-
-```js 
-const DEFAULT_SUBREDDITS = [ 
- 'EarthPics', 
- 'Wallpapers', 
- 'ImaginaryLandscapes', 
- 'Cityscapes', 
- 'SkyShots', 
- 'NaturePics', 
- 'Art', 
- 'Architecture', 
- 'FoodPics', 
- 'Space' 
-]; 
-``` 
-
-You can extend this list safely in <mcfile name="mediaController.js" path="controllers/mediaController.js"></mcfile>. 
+```
+reddit-api/
+├── .gitignore
+├── README.md
+├── controllers/
+│   └── mediaController.js
+├── package-lock.json
+├── package.json
+├── routes/
+│   └── media.js
+├── server.js
+└── utils/
+    ├── redditAuth.js
+    └── redditFetcher.js
+```
 
 ---
 
@@ -172,7 +152,7 @@ Pull requests and feature suggestions are welcome!
 ## 👨‍💻 Author 
 
 **Your Name** 
-GitHub: `https://github.com/your-username` 
+GitHub: `https://github.com/atharvabaodhankar/` 
 
 ---
 
